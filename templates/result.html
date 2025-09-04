@@ -1,0 +1,26 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <title>Health Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>Hello {{ name }} 👋</h2>
+    <h3>Overall Health Status: 
+        {% if overall_status == "good" %}
+            ✅ Good Health
+        {% else %}
+            ❌ Needs Attention
+        {% endif %}
+    </h3>
+
+    <h4>Insights:</h4>
+    <ul>
+        {% for i in insights %}
+            <li>{{ i }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="/">🔙 Check Again</a>
+</body>
+</html>
