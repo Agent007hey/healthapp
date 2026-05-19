@@ -2,25 +2,79 @@
 <html>
 <head>
     <title>Health Result</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <h2>Hello {{ name }} 👋</h2>
-    <h3>Overall Health Status: 
-        {% if overall_status == "good" %}
-            ✅ Good Health
-        {% else %}
-            ❌ Needs Attention
-        {% endif %}
-    </h3>
 
-    <h4>Insights:</h4>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Health Report</h1>
+
+    <h2>Hello {{ name }}</h2>
+
     <ul>
-        {% for i in insights %}
-            <li>{{ i }}</li>
+        {% for insight in insights %}
+            <li>{{ insight }}</li>
         {% endfor %}
     </ul>
 
-    <a href="/">🔙 Check Again</a>
+    {% if overall_status == "good" %}
+        <h3 class="good">Overall Health is GOOD</h3>
+    {% else %}
+        <h3 class="bad">Overall Health Needs Attention</h3>
+    {% endif %}
+
+    <hr>
+
+    <h2>Health Graph</h2>
+
+    <canvas id="healthChart"></canvas>
+
+    <br><br>
+
+    <a href="/">Check Again</a>
+
+</div>
+
+<script>
+
+const ctx = document.getElementById('healthChart');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['BMI', 'Blood Pressure', 'Sugar', 'Pulse'],
+        datasets: [{
+            label: 'Health Parameters',
+            data: [
+                {{ bmi }},
+                {{ bp }},
+                {{ sugar }},
+                {{ pulse }}
+            ],
+            borderWidth: 1
+        }]
+    },
+
+    options: {
+        responsive: true,
+
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+</script>
+
 </body>
 </html>
