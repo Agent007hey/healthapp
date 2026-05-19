@@ -49,7 +49,7 @@ def health_insights(name, age, weight, height, bp, sugar, pulse):
 def index():
     return render_template('index.html')
 
-@app.route('/analyze', methods=['POST'])
+ @app.route('/analyze', methods=['POST'])
 def analyze():
     name = request.form['name']
     age = int(request.form['age'])
@@ -59,13 +59,22 @@ def analyze():
     sugar = int(request.form['sugar'])
     pulse = int(request.form['pulse'])
 
-    insights, overall_status = health_insights(name, age, weight, height, bp, sugar, pulse)
+    bmi = weight / ((height/100) ** 2)
 
-    return render_template('result.html', 
-                           name=name, 
-                           insights=insights, 
-                           overall_status=overall_status)
+    insights, overall_status = health_insights(
+        name, age, weight, height, bp, sugar, pulse
+    )
 
+    return render_template(
+        'result.html',
+        name=name,
+        insights=insights,
+        overall_status=overall_status,
+        bmi=round(bmi, 1),
+        bp=bp,
+        sugar=sugar,
+        pulse=pulse
+    )
 
 # ------------------- DEPLOY ------------------- #
 if __name__ == "__main__":
